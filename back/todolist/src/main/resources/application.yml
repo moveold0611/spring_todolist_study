@@ -9,5 +9,5 @@ mybatis:
   mapper-locations:
     - /mappers/*.xml
 
-#jwt:
-#  secret:
+jwt:
+  secret: H1uc63bskQ1FJ8hgpekYH+L1XUMOl9HAe/CzgqM4q8ClN5xM+MjAFvA45F0qTf5q3gxBG5K21pBLZBvNrHiAEA==

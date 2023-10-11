@@ -42,9 +42,10 @@ public class AuthController {
         return ResponseEntity.ok().body(200);
     }
 
-    @GetMapping("/signin")
+    @PostMapping("/signin")
     public ResponseEntity<?> test(@RequestBody SigninReqDto signinReqDto) {
-
-        return ResponseEntity.ok().body(200);
+        String accessToken = userService.signinUser(signinReqDto);
+        System.out.println(accessToken);
+        return ResponseEntity.ok().body(accessToken);
     }
 }
