@@ -1,6 +1,7 @@
 package com.todostudy.todolist.security;
 
 import com.todostudy.todolist.entity.User;
+import com.todostudy.todolist.exception.SigninException;
 import com.todostudy.todolist.repository.UserMapper;
 import com.todostudy.todolist.service.PrincipalDetailService;
 import io.jsonwebtoken.JwtBuilder;
@@ -17,6 +18,8 @@ import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -61,7 +64,9 @@ public class JwtTokenProvider {
                     .build()
                     .parseClaimsJws(token);
         }catch (Exception e) {
-            return false;
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("message", "만료된 토큰입니다");
+            throw new SigninException(errorMap);
         }
         return true;
     }

@@ -19,7 +19,7 @@ public class PrincipalDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userMapper.findUser("email", email);
         if(user != null) {
-            return new PrincipalUser(user.getEmail(), user.getPassword());
+            return new PrincipalUser(user);
         }
         return null;
     }

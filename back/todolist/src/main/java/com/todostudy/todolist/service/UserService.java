@@ -3,6 +3,7 @@ package com.todostudy.todolist.service;
 import com.todostudy.todolist.dto.SigninReqDto;
 import com.todostudy.todolist.dto.SignupReqDto;
 import com.todostudy.todolist.entity.User;
+import com.todostudy.todolist.exception.SigninException;
 import com.todostudy.todolist.exception.SignupException;
 import com.todostudy.todolist.repository.UserMapper;
 import com.todostudy.todolist.security.JwtTokenProvider;
@@ -50,6 +51,12 @@ public class UserService {
         Authentication authentication
                 = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         String accessToken = jwtTokenProvider.generateAccessToken(authentication);
+
+        if(accessToken == null) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("message", "로그인에 실패하였습니다.");
+            throw new SigninException(errorMap);
+        }
 
         return accessToken;
     }

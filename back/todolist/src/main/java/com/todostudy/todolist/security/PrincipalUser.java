@@ -2,6 +2,7 @@ package com.todostudy.todolist.security;
 
 
 
+import com.todostudy.todolist.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,9 +18,9 @@ public class PrincipalUser implements UserDetails {
     private String password;
 
 
-    public PrincipalUser(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public PrincipalUser(User user) {
+        this.email = user.getEmail();
+        this.password = user.getPassword();
     }
 
     // 로그인 권한 3가지
