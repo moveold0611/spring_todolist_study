@@ -1,7 +1,9 @@
 package com.todostudy.todolist.controller;
 
+import com.todostudy.todolist.dto.SigninReqDto;
 import com.todostudy.todolist.dto.SignupReqDto;
 import com.todostudy.todolist.exception.SignupException;
+import com.todostudy.todolist.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -10,12 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
+
+    private final UserService userService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult) {
@@ -26,14 +30,21 @@ public class AuthController {
             bindingResult.getFieldErrors().forEach(error -> {
                 errorMap.put(error.getField(), error.getDefaultMessage());
             });
-            return ResponseEntity.badRequest().body(errorMap);
-//            throw new SignupException(errorMap);
+            throw new SignupException(errorMap);
         }
+
+        if(userService.checkDuplicated(signupReqDto.getEmail())) {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("message", "중복된 이메일입니다.");
+            throw new SignupException(errorMap);
+        }
+        userService.signupUser(signupReqDto);
         return ResponseEntity.ok().body(200);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<?> test() {
+    @GetMapping("/signin")
+    public ResponseEntity<?> test(@RequestBody SigninReqDto signinReqDto) {
+
         return ResponseEntity.ok().body(200);
     }
 }

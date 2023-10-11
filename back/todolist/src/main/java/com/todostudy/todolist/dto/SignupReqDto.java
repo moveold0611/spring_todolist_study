@@ -1,6 +1,8 @@
 package com.todostudy.todolist.dto;
 
+import com.todostudy.todolist.entity.User;
 import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
@@ -16,4 +18,12 @@ public class SignupReqDto {
 
     @Pattern(regexp = "^[가-힣]{2,6}$", message = "이름 형식을 다시 확인해주세요.")
     private String name;
+
+    public User toUserEntity(BCryptPasswordEncoder passwordEncoder) {
+        return User.builder()
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .build();
+    }
 }
