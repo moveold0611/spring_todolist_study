@@ -2,6 +2,7 @@ package com.todostudy.todolist.security;
 
 
 
+import com.todostudy.todolist.entity.Authority;
 import com.todostudy.todolist.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -16,9 +17,10 @@ public class PrincipalUser implements UserDetails {
 
     private String email;
     private String password;
-
+    private User user;
 
     public PrincipalUser(User user) {
+        this.user = user;
         this.email = user.getEmail();
         this.password = user.getPassword();
     }
@@ -26,11 +28,7 @@ public class PrincipalUser implements UserDetails {
     // 로그인 권한 3가지
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
-//        authorities.forEach(authority ->
-//                authorityList.add
-//                        (new SimpleGrantedAuthority(authority.getRole().getRoleName())));
-        return null;
+        return user.toGrantedAuthorityList();
     }
 
     @Override

@@ -12,6 +12,21 @@
         <result property="email" column="email"/>
         <result property="password" column="password"/>
         <result property="name" column="name"/>
+        <!--    다수의 join    -->
+        <collection property="authorities" javaType="list" resultMap="authorityMap" />
+    </resultMap>
+
+    <resultMap id="authorityMap" type="com.todostudy.todolist.entity.Authority">
+        <id property="authorityId" column="authority_id"/>
+        <result property="roleId" column="at_role_id"/>
+        <result property="userId" column="at_user_id"/>
+        <!--    1:1 join    -->
+        <association property="role" resultMap="roleMap" />
+    </resultMap>
+
+    <resultMap id="roleMap" type="com.todostudy.todolist.entity.Role">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
     </resultMap>
 
     <insert id="saveUser" parameterType="com.todostudy.todolist.entity.User">
@@ -22,12 +37,19 @@
 
     <select id="findUser" parameterType="string" resultMap="userMap">
         select
-            user_id,
+            ut.user_id,
             email,
             password,
-            name
+            name,
+            at.authority_id,
+            at.user_id as at_user_id,
+            at.role_id as at_role_id,
+            rt.role_id,
+            rt.role_name
         from
-            user_tb
+            user_tb ut
+            left outer join authority_tb at on(at.user_id = ut.user_id)
+            left outer join role_tb rt on(rt.role_id = at.role_id)
         where
             ${key} = #{value}
     </select>

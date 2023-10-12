@@ -48,4 +48,11 @@ public class AuthController {
         System.out.println(accessToken);
         return ResponseEntity.ok().body(accessToken);
     }
+
+    @GetMapping("/auth/authenticated")
+    public ResponseEntity<?> authenticated(@RequestBody String token) {
+
+        return ResponseEntity.ok(200);
+    }
+
 }
