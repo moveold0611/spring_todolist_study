@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Mybatis홈페이지 - 시작하기, 매핑된 SQL 구문 살펴보기 복사 -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.todostudy.todolist.repository.TodoMapper">
+
+    <insert id="postTodo" parameterType="com.todostudy.todolist.entity.Todo">
+        insert into
+            todo_tb
+        values(0, #{userId}, #{todo})
+    </insert>
+
+</mapper>
