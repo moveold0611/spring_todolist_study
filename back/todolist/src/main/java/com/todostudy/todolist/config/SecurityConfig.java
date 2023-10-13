@@ -1,7 +1,7 @@
 package com.todostudy.todolist.config;
 
 import com.todostudy.todolist.exception.AuthenticateExceptionEntryPoint;
-import com.todostudy.todolist.filter.JwtAuthFilter;
+import com.todostudy.todolist.filter.JwtAuthFilterTest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticateExceptionEntryPoint authenticateExceptionEntryPoint;
-    private final JwtAuthFilter jwtAuthFilter;
+    private final JwtAuthFilterTest jwtAuthFilterTest;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest() // 나머지는??
                 .authenticated() // 인증 받아라
                 .and() // 그리고
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilterTest, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticateExceptionEntryPoint);
     }

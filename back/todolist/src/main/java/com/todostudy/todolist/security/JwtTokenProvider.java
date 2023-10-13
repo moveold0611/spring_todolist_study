@@ -95,16 +95,20 @@ public class JwtTokenProvider {
                     .getBody()
                     .get("email")
                     .toString();
+
+            PrincipalUser principalUser
+                    = (PrincipalUser) principalDetailService.loadUserByUsername(username);
+            String username2 = claims.get("username", String.class);
+            System.out.println(username2);
+            authentication
+                    = new UsernamePasswordAuthenticationToken(principalUser,
+                    null, principalUser.getAuthorities());
+            return authentication;
         }catch (Exception e) {
             Map<String, String> errorMap = new HashMap<>();
             errorMap.put("message", "토큰 에러");
             throw new SigninException(errorMap);
         }
-        String username = claims.get("username", String.class);
-        PrincipalUser principalUser = (PrincipalUser) principalDetailService.loadUserByUsername(username);
-
-        authentication = new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
-        return authentication;
     }
 
 }
