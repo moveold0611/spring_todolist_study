@@ -11,6 +11,6 @@ public class AuthenticatedController {
     @GetMapping("/authenticated")
     public ResponseEntity<?> authenticated() {
         System.out.println("Authenicated Get 클래스 테스트");
-        return ResponseEntity.ok(200);
+        return ResponseEntity.ok().body("ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ");
     }
 }

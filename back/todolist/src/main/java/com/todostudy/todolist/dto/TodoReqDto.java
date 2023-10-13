@@ -5,14 +5,6 @@ import lombok.Data;
 
 @Data
 public class TodoReqDto {
-    private String email;
-    private String todo;
+    private String content;
 
-    public Todo toTodoEntity(Integer userId, String todo) {
-        Todo todoEntity = Todo.builder()
-                .userId(userId)
-                .todo(todo)
-                .build();
-        return todoEntity;
-    }
 }

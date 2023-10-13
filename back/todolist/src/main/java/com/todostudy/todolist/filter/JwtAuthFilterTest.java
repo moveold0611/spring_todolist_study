@@ -38,11 +38,10 @@ public class JwtAuthFilterTest extends GenericFilter {
         String authorization = httpServletRequest.getHeader("Authorization");
         String uri = httpServletRequest.getRequestURI();
         // Bearer 토큰
-        System.out.println(authorization);
-        System.out.println("주소 에러 테스트 진입");
+
+
 
         if(uri.startsWith("/auth") && !uri.startsWith("/authenticated")) {
-            System.out.println("주소 에러 테스트");
             chain.doFilter(req, resp);
             return;
         }
@@ -58,7 +57,6 @@ public class JwtAuthFilterTest extends GenericFilter {
         }
 
         System.out.println(accessToken);
-        System.out.println("주소 에러 테스트 이탈 후");
 
         Claims claims = null;
 
@@ -68,7 +66,6 @@ public class JwtAuthFilterTest extends GenericFilter {
                     .build()
                     .parseClaimsJws(accessToken)
                     .getBody();
-            System.out.println("try 후");
 
         }catch(Exception e) {
             chain.doFilter(req, resp);
@@ -76,11 +73,9 @@ public class JwtAuthFilterTest extends GenericFilter {
             return;
         }
 
-        System.out.println("claims 전");
         String username = claims.get("username", String.class);
         List<Object> authList = claims.get("auth", List.class);
         List<Authority> authorities = new ArrayList<>();
-        System.out.println("claims 후");
 
         authList.forEach(auth -> {
             Role role = new Role();
@@ -89,25 +84,22 @@ public class JwtAuthFilterTest extends GenericFilter {
             authority.setRole(role);
             authorities.add(authority);
         });
-        System.out.println("authorities 제작 후");
 
         User user = User.builder()
                 .email(username)
                 .authorities(authorities)
                 .build();
-        System.out.println("user 제작 후");
 
         PrincipalUser principalUser = new PrincipalUser(user);
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken
                         (principalUser, null, principalUser.getAuthorities());
-        System.out.println("authentication 제작 후");
+
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println("SecurityContextHolder 삽입 후");
 
         chain.doFilter(req, resp);
-        System.out.println("최종 chain 후");
-        return;
+        System.out.println("마지막 chain 후");
+
     }
 }

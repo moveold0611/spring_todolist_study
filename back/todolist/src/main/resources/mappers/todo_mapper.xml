@@ -12,4 +12,30 @@
         values(0, #{userId}, #{todo})
     </insert>
 
+    <select id="getTodoListByUserId" parameterType="Integer" resultType="com.todostudy.todolist.entity.Todo">
+        select
+            todo_id as todoId,
+            user_id as userId,
+            todo
+        from
+            todo_tb
+        where
+            user_id = #{userId}
+    </select>
+
+    <update id="updateTodo" parameterType="com.todostudy.todolist.dto.GetTodoListRespDto">
+        update
+            todo_tb
+        set
+            todo = #{todo}
+        where
+            todo_id = #{todoId}
+    </update>
+
+    <delete id="deleteTodo" parameterType="Integer">
+        delete from
+            todo_tb
+        where
+            todo_id = #{todoId}
+    </delete>
 </mapper>
