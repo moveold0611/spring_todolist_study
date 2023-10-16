@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring_todo
+    username: root
+    password: 1q2w3e4r
+
+mybatis:
+  mapper-locations:
+    - /mappers/*.xml
+
+jwt:
+  secret: H1uc63bskQ1FJ8hgpekYH+L1XUMOl9HAe/CzgqM4q8ClN5xM+MjAFvA45F0qTf5q3gxBG5K21pBLZBvNrHiAEA==

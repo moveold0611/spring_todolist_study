@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Mybatis홈페이지 - 시작하기, 매핑된 SQL 구문 살펴보기 복사 -->
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.todostudy.todolist.repository.UserMapper">
+
+    <!--  Join용도의 Map  -->
+    <resultMap id="userMap" type="com.todostudy.todolist.entity.User">
+        <id property="userId" column="user_id"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="name" column="name"/>
+        <!--    다수의 join    -->
+        <collection property="authorities" javaType="list" resultMap="authorityMap" />
+    </resultMap>
+
+    <resultMap id="authorityMap" type="com.todostudy.todolist.entity.Authority">
+        <id property="authorityId" column="authority_id"/>
+        <result property="roleId" column="at_role_id"/>
+        <result property="userId" column="at_user_id"/>
+        <!--    1:1 join    -->
+        <association property="role" resultMap="roleMap" />
+    </resultMap>
+
+    <resultMap id="roleMap" type="com.todostudy.todolist.entity.Role">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+    <insert id="saveUser" parameterType="com.todostudy.todolist.entity.User">
+        insert into
+            user_tb
+        values(0, #{email}, #{password}, #{name})
+    </insert>
+
+    <select id="findUser" parameterType="string" resultMap="userMap">
+        select
+            ut.user_id,
+            email,
+            password,
+            name,
+            at.authority_id,
+            at.user_id as at_user_id,
+            at.role_id as at_role_id,
+            rt.role_id,
+            rt.role_name
+        from
+            user_tb ut
+            left outer join authority_tb at on(at.user_id = ut.user_id)
+            left outer join role_tb rt on(rt.role_id = at.role_id)
+        where
+            ${key} = #{value}
+    </select>
+
+    <!--  중복확인 다른방법 (count)  -->
+    <select id="getUserCountByEmail" parameterType="string" resultMap="userMap">
+        select
+            count(*)
+        from
+            user_tb
+        where
+            email = #{email}
+    </select>
+
+</mapper>
